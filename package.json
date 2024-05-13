@@ -1,0 +1,25 @@
+{
+  "name": "js_bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node ./src/main.js",
+    "dev": "node --inspect --watch ./src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "deep-object-diff": "^1.1.9",
+    "dotenv": "^16.4.5",
+    "json-rpc-2.0": "^1.7.0",
+    "jsonrpc-websocket-client": "^0.7.2",
+    "node-schedule": "^2.1.1",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
+    "telegraf": "^4.16.3",
+    "websocket": "^1.0.34"
+  },
+  "type": "module"
+}

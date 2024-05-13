@@ -2,7 +2,7 @@ export default  {
   bots: [
     {
       bot_token: "___BOT__TOKEN___",
-      admin: INT_ADMIN_ID,
+      admins: [INT_ADMIN_ID],
       chats: [CHATS_IDS],
       printer: {
         name: "Printer 1",

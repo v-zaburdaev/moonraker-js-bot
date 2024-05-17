@@ -144,7 +144,7 @@ export class Bot {
       this.last_update = new Date().getTime() / 1000;
       for (const chat_id of this.chats) {
         if (job_id) {
-          let message = this.messages[job_id];
+          let message = this.messages[chat_id+'/'+job_id];
           if (!message) {
             if (photo) {
               let msg = await this.bot.telegram.sendPhoto(
@@ -152,17 +152,17 @@ export class Bot {
                 Input.fromBuffer(photo),
                 { caption: `${text}` }
               );
-              this.messages[job_id] = msg;
+              this.messages[chat_id+'/'+job_id] = msg;
               console.log(msg);
             } else {
               let msg = await this.bot.telegram.sendMessage(chat_id, `${text}`);
-              this.messages[job_id] = msg;
+              this.messages[chat_id+'/'+job_id] = msg;
             }
           } else {
             if (message.photo && !photo) {
               await this.bot.telegram.editMessageMedia(
                 chat_id,
-                this.messages[job_id].message_id,
+                this.messages[chat_id+'/'+job_id].message_id,
                 null,
                 {
                   caption: `${text}`,
@@ -173,7 +173,7 @@ export class Bot {
             } else if (message.photo && photo) {
               await this.bot.telegram.editMessageMedia(
                 chat_id,
-                this.messages[job_id].message_id,
+                this.messages[chat_id+'/'+job_id].message_id,
                 null,
                 {
                   caption: `${text}`,
@@ -184,7 +184,7 @@ export class Bot {
             } else {
               await this.bot.telegram.editMessageText(
                 chat_id,
-                this.messages[job_id].message_id,
+                this.messages[chat_id+'/'+job_id].message_id,
                 null,
                 `${text}`
               );

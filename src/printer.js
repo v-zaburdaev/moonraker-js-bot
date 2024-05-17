@@ -1,4 +1,5 @@
 import Client from "jsonrpc-websocket-client";
+import { createBackoff } from "jsonrpc-websocket-client";
 
 export class Printer {
   config = null;
@@ -24,12 +25,13 @@ export class Printer {
     let uri = new URL(this.config.url.replace(/\/$/, "") + "/websocket");
     let wsUrl = `ws://${uri.hostname}:${uri.port}${uri.pathname}?token=${this.config.token}`;
 
-    this.wsclient = new Client.JsonRpcWebSocketClient(wsUrl);
     try {
-      await this.wsclient.open();
+      this.wsclient = new Client.JsonRpcWebSocketClient(wsUrl);
+      await this.wsclient.open(createBackoff());
       this.opened = true;
     } catch (e) {
       this.callback("error", e);
+      this.open();
     }
 
     let objects_query = await this.getObjectsQuery({
@@ -69,6 +71,7 @@ export class Printer {
     this.wsclient.on("closed", () => {
       console.log("conn closed");
       this.opened = false;
+      this.open();
     });
 
     await this.updatePrinterInfo();

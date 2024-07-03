@@ -177,14 +177,26 @@ export class Printer {
   //   }
   // }
 
-  getImage() {
+  async getImage() {
     return new Promise(async (resolve, reject) => {
       if (this.opened) {
         if (this.printer_info.state === "ready") {
           if (this.status.print_stats.state === "printing") {
-            let res = await fetch(this.config.cam_url);
+            try {
+              let res = await fetch(this.config.cam_url);
+              if(res.status === 200){
+                resolve(Buffer.from(await res.arrayBuffer()));
+              } else {
+                let filename = this.status.print_stats.filename;
+                let res = await this.getThumbnailImage(filename)
+                resolve(res);  
+              }
+            } catch (e) {
+              let filename = this.status.print_stats.filename;
+              let res = await this.getThumbnailImage(filename)
+              resolve(res);
+            }
 
-            resolve(Buffer.from(await res.arrayBuffer()));
           }
         }
       }
